@@ -1,0 +1,43 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class rbUIManager : MonoBehaviour
+{
+    //public PlayerHealth playerHealth;
+    public rbPlayerMovement playerMoveSpeed;
+    public Slider moveSpeedSlider;
+    public rbPlayerMovement playerStamina;
+    public Slider staminaSlider;
+    public rbPlayerMovement standHeight;
+    public Slider heightSlider;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        UpdateMoveSpeedSlider();
+        UpdateStaminaSlider();
+    }
+
+    public void UpdateMoveSpeedSlider()
+    {
+        moveSpeedSlider.value = playerMoveSpeed.moveSpeed;
+    }
+
+    public void UpdateStaminaSlider()
+    {
+        staminaSlider.value = playerStamina.stamina;
+    }
+
+    public void UpdateHeightSlider()
+    {
+        heightSlider.value = standHeight.standHeight;
+    }
+}

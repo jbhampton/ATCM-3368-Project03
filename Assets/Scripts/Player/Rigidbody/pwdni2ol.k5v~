@@ -1,0 +1,89 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class rbPlayerMovement : MonoBehaviour
+{
+    
+
+    [SerializeField] private Rigidbody PlayerBody;
+    [SerializeField] private CapsuleCollider PlayerCollider;
+    [Space]
+
+    //move vars
+    private Vector3 PlayerMovementInput;
+    [SerializeField] public float moveSpeed;
+    [SerializeField] float minMoveSpeed;
+    [SerializeField] float maxMoveSpeed;
+
+    //jump vars
+    [SerializeField] private float jumpForce;
+    public bool isGrounded;
+    public Transform groundCheck;
+    public float groundDistance = 0.4f;
+    public LayerMask groundMask;
+    public LayerMask obstacleMask;
+
+    //crouch vars
+    private bool Crouching;
+    public float crouchHeight;
+    private float minCrouchHeight = 1f;
+    private float standHeight = 2f;
+
+    //stamina vars
+    public float stamina = 100f;
+    public float fatigue = 10f;
+    public int adrenaline = 5;
+
+    //UI vars
+    [SerializeField] rbUIManager rbUIManager;
+    
+
+    private void Awake()
+    {
+        Crouching == false;
+    }
+
+    void Update()
+    {
+        //==PLAYER MOVEMENT==
+        //adjust move speed
+        moveSpeed = Mathf.Clamp(moveSpeed, minMoveSpeed, maxMoveSpeed);
+        moveSpeed += Input.GetAxis("Mouse ScrollWheel");
+        //move player
+        PlayerMovementInput = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
+        MovePlayer();
+
+        //==PLAYER JUMPING==
+        //check if grounded
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded == true)
+        {
+            Jump();
+        }
+
+        //==CROUCHING==
+        //crouch
+        if (Input.GetKeyDown(KeyCode.C) && Crouching == false)
+        {
+            Crouch();
+        }
+        //adjust crouchHeight
+    }
+
+    private void MovePlayer()
+    {
+        Vector3 MoveVector = transform.TransformDirection(PlayerMovementInput) * moveSpeed;
+        PlayerBody.velocity = new Vector3(MoveVector.x, PlayerBody.velocity.y, MoveVector.z);
+    }
+
+    private void Jump()
+    {
+        PlayerBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+    }
+
+    private void Crouch()
+    {
+        PlayerCollider.height = crouchHeight;
+    }
+}

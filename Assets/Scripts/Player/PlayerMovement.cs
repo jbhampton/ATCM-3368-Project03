@@ -156,12 +156,6 @@ public class PlayerMovement : MonoBehaviour
             crouchHeight += Input.GetAxis("Mouse ScrollWheel");
             Crouch(crouchHeight);
         }
-
-        //prone
-        if (Input.GetKey(KeyCode.LeftControl))
-        {
-            //prone
-        }
     }
 
     //DELETE may be unecessary
