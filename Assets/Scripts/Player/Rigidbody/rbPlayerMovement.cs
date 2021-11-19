@@ -16,6 +16,8 @@ public class rbPlayerMovement : MonoBehaviour
     [SerializeField] public float moveSpeed;
     [SerializeField] float minMoveSpeed;
     [SerializeField] float maxMoveSpeed;
+    public bool isMoving;
+    public bool isSprinting;
     #endregion
 
     #region JUMP VARS
@@ -43,7 +45,7 @@ public class rbPlayerMovement : MonoBehaviour
     //stamina vars
     public float stamina = 100f;
     public float fatigue = 10f;
-    public int adrenaline = 5;
+    public float adrenaline = 5f;
     #endregion
 
     //UI vars
@@ -72,6 +74,10 @@ public class rbPlayerMovement : MonoBehaviour
         //move player
         PlayerMovementInput = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
         MovePlayer();
+        if(PlayerBody.velocity.magnitude > 0)
+        {
+            isMoving = true;
+        }
         #endregion
 
         //==PLAYER JUMPING==
@@ -81,6 +87,7 @@ public class rbPlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded == true)
         {
             Jump();
+            Stand();
         }
         #endregion
 
@@ -110,10 +117,40 @@ public class rbPlayerMovement : MonoBehaviour
         }
         if (Crouching == true)
         {
-            maxMoveSpeed = 3;
+            maxMoveSpeed = 2;
         } else
         {
-            maxMoveSpeed = 5;
+            maxMoveSpeed = 4;
+        }
+        #endregion
+
+        //==SPRINT==
+        #region SPRINT
+        if (Input.GetKey(KeyCode.LeftShift) && isMoving == true)
+        {
+            //sprinting = true
+            isSprinting = true;
+            //increase movespeed
+            maxMoveSpeed = 7;
+            moveSpeed = 7;
+            //drain stamina
+            DecreaseStamina();
+            Stand();
+
+        } else
+        {
+            maxMoveSpeed = 4;
+            isSprinting = false;
+            isMoving = false;
+        }
+        if (stamina < 100f && isSprinting == false)
+        {
+            //regen stamina
+            StartCoroutine(IncreaseStamina(2));
+        }
+        if (stamina <= 1)
+        {
+            OutOfStamina();
         }
         #endregion
     }
@@ -123,6 +160,11 @@ public class rbPlayerMovement : MonoBehaviour
         Vector3 MoveVector = transform.TransformDirection(PlayerMovementInput) * moveSpeed;
         PlayerBody.velocity = new Vector3(MoveVector.x, PlayerBody.velocity.y, MoveVector.z);
         //StartCoroutine(cameraShake.Shake(5f, 0.4f));
+        //limit strafe if sprinting
+        if(isSprinting == true)
+        {
+            PlayerBody.velocity = new Vector3(MoveVector.x, PlayerBody.velocity.y, MoveVector.z/2);
+        }
     }
 
     private void Jump()
@@ -144,5 +186,28 @@ public class rbPlayerMovement : MonoBehaviour
         standHeight = maxStandHeight;
         currentHeight = standHeight;
         Crouching = false;
+    }
+
+    //STAMINA REGEN AND FATIGUE EFFECTS
+    public void DecreaseStamina()
+    {
+        stamina = Mathf.Clamp(stamina, 0, 100);
+        stamina -= Time.deltaTime * (fatigue);
+        //Debug.Log(stamina);
+    }
+
+    public IEnumerator IncreaseStamina(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        stamina = Mathf.Clamp(stamina, 0, 100);
+        stamina += Time.deltaTime * adrenaline;
+        //Debug.Log(stamina);
+    }
+
+    public void OutOfStamina()
+    {
+        isSprinting = false;
+        maxMoveSpeed = 4;
+        
     }
 }
