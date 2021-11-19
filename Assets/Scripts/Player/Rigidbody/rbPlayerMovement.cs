@@ -136,10 +136,10 @@ public class rbPlayerMovement : MonoBehaviour
             //drain stamina
             DecreaseStamina();
             Stand();
+            
 
         } else
         {
-            maxMoveSpeed = 4;
             isSprinting = false;
             isMoving = false;
         }
@@ -192,7 +192,7 @@ public class rbPlayerMovement : MonoBehaviour
     public void DecreaseStamina()
     {
         stamina = Mathf.Clamp(stamina, 0, 100);
-        stamina -= Time.deltaTime * (fatigue);
+        stamina -= Time.deltaTime * (20);
         //Debug.Log(stamina);
     }
 

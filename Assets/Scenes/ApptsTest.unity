@@ -5189,9 +5189,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 399785850}
     m_Modifications:
+    - target: {fileID: 3965964751035441426, guid: 3a293c7b0a241ae46a2f1c2a74540d78, type: 3}
+      propertyPath: sprintingClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 21b8d9b5d95c49042b1020b186241179, type: 3}
+    - target: {fileID: 3965964751035441426, guid: 3a293c7b0a241ae46a2f1c2a74540d78, type: 3}
+      propertyPath: footsteps.Array.data[6]
+      value: 
+      objectReference: {fileID: 8300000, guid: b2daa6f25a2e9ff438755b2ee6698741, type: 3}
     - target: {fileID: 3965964751035441432, guid: 3a293c7b0a241ae46a2f1c2a74540d78, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 3965964751035441437, guid: 3a293c7b0a241ae46a2f1c2a74540d78, type: 3}
+      propertyPath: m_audioClip
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3965964751035441439, guid: 3a293c7b0a241ae46a2f1c2a74540d78, type: 3}
       propertyPath: m_RootOrder
@@ -5236,6 +5248,10 @@ PrefabInstance:
     - target: {fileID: 3965964751035441439, guid: 3a293c7b0a241ae46a2f1c2a74540d78, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3965964752244702485, guid: 3a293c7b0a241ae46a2f1c2a74540d78, type: 3}
+      propertyPath: mouseSensitivity
+      value: 150
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a293c7b0a241ae46a2f1c2a74540d78, type: 3}
